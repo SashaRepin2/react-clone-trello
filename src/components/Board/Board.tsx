@@ -6,10 +6,10 @@ interface BoardProps {
   board: IBoard;
 }
 
-export const Board: React.FC<BoardProps> = () => {
+export const Board: React.FC<BoardProps> = ({ board }) => {
   return (
     <div className={styles.container}>
-      <div className={styles.title}></div>
+      <div className={styles.title}>{board.title}</div>
     </div>
   );
 };
