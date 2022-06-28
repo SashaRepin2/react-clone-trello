@@ -32,6 +32,7 @@ const HomePage: React.FC = () => {
           backgroundColor: "#D0BDF4",
           borderRadius: "10px",
           minWidth: "300px",
+          boxShadow: 4,
         }}
       >
         <Stack
