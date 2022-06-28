@@ -1,7 +1,7 @@
-import { IListItem } from "./IListItem";
+import { ITask } from "./ITask";
 
 export interface IList {
   id: number;
   title: string;
-  items: IListItem[];
+  items: ITask[];
 }

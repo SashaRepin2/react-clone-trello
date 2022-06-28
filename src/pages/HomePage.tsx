@@ -1,44 +1,60 @@
 import React from "react";
-import { Board } from "../components/Board/Board";
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { BoardSlice } from "../store/reducers/BoardSlice";
+import { Container, Stack, Typography } from "@mui/material";
+import { Board, BoardForm } from "../components";
+import useAppSelector from "../hooks/useAppSelector";
 
-export const HomePage: React.FC = () => {
+const HomePage: React.FC = () => {
   const { boards } = useAppSelector((state) => state.boardReducer);
-  const { addBoard } = BoardSlice.actions;
-  const dispatch = useAppDispatch();
+  const [isExpanded, setIsExpanded] = React.useState<boolean>(false);
 
-  const [inputValue, setInputValue] = React.useState<string>("");
-  function onKeyDownHanlder(event: React.KeyboardEvent<HTMLInputElement>) {
-    console.log("Key: " + event.code);
-
-    if (event.code === "Enter" || event.code === "NumpadEnter") {
-      event.preventDefault();
-      dispatch(addBoard({ id: Date.now(), title: inputValue, lists: [] }));
-      setInputValue("");
-      console.log(boards);
-    }
-  }
+  const handleExpanded = React.useCallback(() => {
+    setIsExpanded(!isExpanded);
+  }, [isExpanded]);
 
   return (
-    <React.Fragment>
-      <div>
-        <input
-          value={inputValue}
-          onChange={(e) => {
-            setInputValue(e.target.value);
-          }}
-          onKeyDown={onKeyDownHanlder}
-        />
-      </div>
-      <div>
-        <div>Title</div>
-        <div>
-          {boards.map((board) => (
-            <Board key={board.id} board={board} />
-          ))}
-        </div>
-      </div>
-    </React.Fragment>
+    <Container
+      sx={{
+        display: "grid",
+        gridTemplateColumns: "repeat(2, 1fr)",
+        gridTemplateRows: "minmax(512px, min-content)",
+        gridGap: "50px",
+        justifyContent: "space-around",
+      }}
+    >
+      <Container>
+        <BoardForm isExpanded={isExpanded} setIsExpanded={handleExpanded} />
+      </Container>
+      <Container
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
+          backgroundColor: "#D0BDF4",
+          borderRadius: "10px",
+          minWidth: "300px",
+        }}
+      >
+        <Stack
+          direction="column"
+          justifyContent="flex-start"
+          alignItems="stretch"
+          spacing={2}
+          sx={{ padding: "15px 0" }}
+        >
+          {boards.length ? (
+            boards.map((board) => <Board key={board.id} board={board} />)
+          ) : (
+            <Typography
+              variant={"h5"}
+              sx={{ textAlign: "center", color: "#fff", fontWeight: "bold" }}
+            >
+              Добавьте новую доску
+            </Typography>
+          )}
+        </Stack>
+      </Container>
+    </Container>
   );
 };
+
+export default HomePage;
