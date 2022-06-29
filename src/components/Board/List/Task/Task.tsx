@@ -1,50 +1,62 @@
-import { Container } from "@mui/material";
+import { Box, Container, IconButton } from "@mui/material";
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
-import useAppDispatch from "../../../../hooks/useAppDispatch";
-import { ITask } from "../../../../interfaces/ITask";
-import { BoardSlice } from "../../../../store/reducers/BoardSlice";
+import { ITask, Statuses } from "../../../../interfaces/ITask";
 
-import styles from "./Task.module.scss";
+import CheckIcon from "@mui/icons-material/Check";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface ItemProps {
   index: number;
-  item: ITask;
+  task: ITask;
+  onCompleteHandler: (taskId: number) => void;
+  onDeleteHandler: (taskId: number) => void;
 }
 
-const Task: React.FC<ItemProps> = ({ item, index }) => {
-  const dispatch = useAppDispatch();
-  const {} = BoardSlice.actions;
-
-  function onCompleteHandler() {}
-
-  function onDeleteHandler() {}
-
+const Task: React.FC<ItemProps> = ({
+  task,
+  index,
+  onDeleteHandler,
+  onCompleteHandler,
+}) => {
   return (
-    <Draggable draggableId={item.id.toString()} index={index}>
+    <Draggable draggableId={task.id.toString()} index={index}>
       {(provided, snapshot) => (
         <Container
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            borderRadius: "10px",
+            padding: "5px",
+            bgcolor: task.status === Statuses.COMPLETE ? "green" : "#fff",
+          }}
         >
-          <div className={styles.title}>{item.title}</div>
-          <div className={styles.options}>
-            <button
+          <Box>{task.title}</Box>
+          <Box>
+            <IconButton
               onClick={() => {
-                console.log("Complete Item with id " + item.id);
+                onCompleteHandler(task.id);
               }}
             >
-              Complete
-            </button>
-            <button
+              {task.status === Statuses.COMPLETE ? (
+                <CloseIcon />
+              ) : (
+                <CheckIcon />
+              )}
+            </IconButton>
+            <IconButton
               onClick={() => {
-                console.log("Delete Item with id " + item.id);
+                onDeleteHandler(task.id);
               }}
             >
-              Delete
-            </button>
-          </div>
+              <DeleteIcon />
+            </IconButton>
+          </Box>
         </Container>
       )}
     </Draggable>

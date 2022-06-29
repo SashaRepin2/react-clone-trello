@@ -7,13 +7,13 @@ import useAppDispatch from "../hooks/useAppDispatch";
 
 import { Box, Container, Stack, TextField, Typography } from "@mui/material";
 import { BoardSlice } from "../store/reducers/BoardSlice";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
 import NotFoundPage from "./NotFoundPage";
 
 const BoardPage: React.FC = () => {
   const { boardId } = useParams<Params>();
-  const { addList } = BoardSlice.actions;
+  const { addList, moveTask } = BoardSlice.actions;
 
   const dispatch = useAppDispatch();
   const board = useAppSelector((state) => {
@@ -37,7 +37,31 @@ const BoardPage: React.FC = () => {
     }
   }
 
-  function onDragEndHandler() {}
+  function onDragEndHandler(result: DropResult) {
+    const { source, destination, draggableId } = result;
+
+    if (!destination || !boardId) {
+      return;
+    }
+
+    // from
+    const sInd = +source.droppableId;
+    // to
+    const dInd = +destination.droppableId;
+
+    if (sInd !== dInd) {
+      // movable task
+      const taskId = +draggableId;
+      dispatch(
+        moveTask({
+          fromListId: sInd,
+          toListId: dInd,
+          taskId: taskId,
+          boardId: +boardId,
+        })
+      );
+    }
+  }
 
   if (!board) {
     return <NotFoundPage />;
@@ -72,13 +96,22 @@ const BoardPage: React.FC = () => {
         >
           {`Доска: ${board.title}`}
         </Typography>
-        <TextField
-          value={inputValue}
-          onChange={(e) => {
-            setInputValue(e.target.value);
+        <Box
+          sx={{
+            color: "#fff",
+            bgcolor: "#8458b3",
+            borderRadius: "10px",
+            padding: "15px 20px",
           }}
-          onKeyDown={onKeyDownHandler}
-        />
+        >
+          <TextField
+            value={inputValue}
+            onChange={(e) => {
+              setInputValue(e.target.value);
+            }}
+            onKeyDown={onKeyDownHandler}
+          />
+        </Box>
       </Box>
       <Container
         sx={{
@@ -88,6 +121,8 @@ const BoardPage: React.FC = () => {
           backgroundColor: "#D0BDF4",
           borderRadius: "10px",
           minWidth: "300px",
+          boxShadow: 3,
+          padding: "15px 0",
         }}
       >
         <DragDropContext onDragEnd={onDragEndHandler}>
@@ -97,13 +132,14 @@ const BoardPage: React.FC = () => {
             alignItems="flex-start"
             spacing={2}
             sx={{
-              padding: "15px 0",
+              overflow: "hidden",
+              margin: "15px 0",
               overflowX: "auto",
               minHeight: "200px",
-              bgcolor: "steelblue",
+              paddingBottom: "10px",
             }}
           >
-            {board.lists.map((list, index) => (
+            {board.lists.map((list) => (
               <List key={list.id} list={list} boardId={board.id} />
             ))}
           </Stack>
