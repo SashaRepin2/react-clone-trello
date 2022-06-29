@@ -20,7 +20,6 @@ const BoardPage: React.FC = () => {
     if (boardId) {
       return state.boardReducer.boards.find((item) => item.id === +boardId);
     }
-    return null;
   });
 
   const [inputValue, setInputValue] = React.useState<string>("");
@@ -34,6 +33,7 @@ const BoardPage: React.FC = () => {
             list: { id: Date.now(), title: inputValue, items: [] },
           })
         );
+      setInputValue("");
     }
   }
 
@@ -50,7 +50,6 @@ const BoardPage: React.FC = () => {
     const dInd = +destination.droppableId;
 
     if (sInd !== dInd) {
-      // movable task
       const taskId = +draggableId;
       dispatch(
         moveTask({
@@ -88,6 +87,8 @@ const BoardPage: React.FC = () => {
         <Typography
           variant="h5"
           sx={{
+            display: "flex",
+            flexWrap: "nowrap",
             color: "#fff",
             bgcolor: "#8458b3",
             borderRadius: "10px",
@@ -102,14 +103,17 @@ const BoardPage: React.FC = () => {
             bgcolor: "#8458b3",
             borderRadius: "10px",
             padding: "15px 20px",
+            marginLeft: "15px",
           }}
         >
           <TextField
             value={inputValue}
+            placeholder={"Название списка"}
             onChange={(e) => {
               setInputValue(e.target.value);
             }}
             onKeyDown={onKeyDownHandler}
+            sx={{ input: { color: "#fff" } }}
           />
         </Box>
       </Box>
