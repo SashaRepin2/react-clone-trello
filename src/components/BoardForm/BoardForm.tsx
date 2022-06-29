@@ -52,7 +52,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ isExpanded, setIsExpanded }) => {
         <AccordionDetails className={"board_form__body"}>
           <TextField
             value={inputValue}
-            placeholder={"Board title"}
+            placeholder={"Название доски"}
             onChange={(e) => {
               setInputValue(e.target.value);
             }}

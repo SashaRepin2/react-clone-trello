@@ -8,7 +8,12 @@ const BackButton: React.FC = () => {
     <Link
       to={"boards"}
       id="back-button"
-      style={{ position: "absolute", top: "25px", left: "25px" }}
+      style={{
+        position: "absolute",
+        bottom: "25px",
+        left: "25px",
+        zIndex: "1001",
+      }}
     >
       <IconButton
         aria-label="back"

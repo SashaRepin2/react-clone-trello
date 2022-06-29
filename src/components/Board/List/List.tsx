@@ -55,11 +55,11 @@ const List: React.FC<ListProps> = ({ list, boardId }) => {
 
   return (
     <Container
+      disableGutters={true}
       sx={{
         bgcolor: "#8458b3",
         borderRadius: "10px",
         height: "100%",
-        padding: "5px 0",
       }}
     >
       <Box
@@ -68,7 +68,9 @@ const List: React.FC<ListProps> = ({ list, boardId }) => {
           flexDirection: "column",
           justifyContent: "flex-start",
           alignItems: "center",
-          margin: "15px 0",
+          bgcolor: "#400085",
+          padding: "10px 5px",
+          borderRadius: "10px 10px 0 0",
         }}
       >
         <Typography variant={"h6"} sx={{ color: "#fff" }}>
@@ -76,14 +78,21 @@ const List: React.FC<ListProps> = ({ list, boardId }) => {
         </Typography>
         <TextField
           value={inputValue}
+          placeholder={"Название задания"}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={onKeyDownHandler}
+          sx={{ input: { color: "#fff" } }}
         />
       </Box>
       <Droppable droppableId={list.id.toString()}>
         {(provided, snapshot) => (
           <Stack
-            sx={{ height: "100%", minHeight: "500px", minWidth: "300px" }}
+            sx={{
+              height: "100%",
+              minHeight: "500px",
+              minWidth: "300px",
+              padding: "15px 10px",
+            }}
             direction={"column"}
             spacing={2}
             ref={provided.innerRef}
