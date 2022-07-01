@@ -1,8 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import boardReducer from "./reducers/BoardSlice";
+import listReducer from "./reducers/ListSlice";
+import taskReducer from "./reducers/TaskSlice";
 
 const rootReducer = combineReducers({
   boardReducer,
+  listReducer,
+  taskReducer,
 });
 
 export const setupStore = () =>

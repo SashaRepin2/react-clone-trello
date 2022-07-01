@@ -16,101 +16,36 @@ const initialState: IBoardState = {
 };
 
 export const BoardSlice = createSlice({
-  name: "board",
+  name: "boards",
   initialState,
   reducers: {
-    addBoard(state, action: PayloadAction<IBoard>) {
-      state.boards.push(action.payload);
+    /**
+     * Добавление новой доски
+     * @param state текущее состояние
+     * @param action объект - доска
+     */
+    addBoard(state, action: PayloadAction<{ newBoard?: IBoard }>) {
+      const { newBoard } = action.payload;
+      if (newBoard) {
+        state.boards.push(newBoard);
+      } else {
+        state.boards.push({
+          id: Date.now(),
+          title: "New Board",
+          created: Date.now(),
+        });
+      }
     },
-    getBoard(state, action: PayloadAction<number>) {
-      state.boards.find((item) => item.id === action.payload);
-    },
+
+    /**
+     * Удаление доски
+     * @param state  текущее состояние
+     * @param action уникальный номер доски
+     */
     deleteBoard(state, action: PayloadAction<number>) {
       state.boards = state.boards.filter(
         (board) => board.id !== action.payload
       );
-    },
-    addList(state, action: PayloadAction<{ boardId: number; list: IList }>) {
-      const { boardId, list } = action.payload;
-      state.boards.find((item) => item.id === boardId)?.lists.push(list);
-    },
-    deleteList(
-      state,
-      action: PayloadAction<{ boardId: number; listId: number }>
-    ) {
-      const { boardId, listId } = action.payload;
-      const board = state.boards.find((item) => item.id === boardId);
-
-      if (board) {
-        board.lists = board.lists.filter((item) => item.id !== listId);
-      }
-    },
-    addTask(
-      state,
-      action: PayloadAction<{ boardId: number; listId: number; task: ITask }>
-    ) {
-      const { boardId, listId, task } = action.payload;
-      state.boards
-        .find((item) => item.id === boardId)
-        ?.lists.find((item) => item.id === listId)
-        ?.items.push(task);
-    },
-    completeTask(
-      state,
-      action: PayloadAction<{
-        boardId: number;
-        listId: number;
-        taskId: number;
-        // newStatus: Statuses;
-      }>
-    ) {
-      const { boardId, listId, taskId } = action.payload;
-      const task = state.boards
-        .find((item) => item.id === boardId)
-        ?.lists.find((item) => item.id === listId)
-        ?.items.find((item) => item.id === taskId);
-
-      if (task) {
-        task.status =
-          task.status === Statuses.COMPLETE
-            ? Statuses.UNCOMPLETE
-            : Statuses.COMPLETE;
-      }
-    },
-    deleteTask(
-      state,
-      action: PayloadAction<{ boardId: number; listId: number; taskId: number }>
-    ) {
-      const { boardId, listId, taskId } = action.payload;
-
-      let list = state.boards
-        .find((item) => item.id === boardId)
-        ?.lists.find((item) => item.id === listId);
-
-      if (list) {
-        list.items = list?.items.filter((item) => item.id !== taskId);
-      }
-    },
-    moveTask(
-      state,
-      action: PayloadAction<{
-        fromListId: number;
-        toListId: number;
-        taskId: number;
-        boardId: number;
-      }>
-    ) {
-      const { fromListId, toListId, taskId, boardId } = action.payload;
-
-      const board = state.boards.find((item) => boardId === item.id);
-      let fromList = board?.lists.find((item) => fromListId === item.id);
-      let toList = board?.lists.find((item) => toListId === item.id);
-      const task = fromList?.items.find((item) => taskId === item.id);
-
-      if (fromList && toList && task) {
-        fromList.items = fromList.items.filter((item) => item.id !== task.id);
-        toList.items.push(task);
-      }
     },
   },
 });
