@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IList } from "../../interfaces/ILIst";
+import { IList } from "../../interfaces/IList";
 
 interface IListState {
   lists: IList[];
@@ -17,9 +17,8 @@ export const ListSlice = createSlice({
   name: "lists",
   initialState,
   reducers: {
-    addList(state, action: PayloadAction<{ newList: IList }>) {
-      const { newList } = action.payload;
-      state.lists.push(newList);
+    addList(state, action: PayloadAction<IList>) {
+      state.lists.push(action.payload);
     },
     deleteList(state, action: PayloadAction<number>) {
       state.lists = state.lists.filter((item) => item.id !== action.payload);

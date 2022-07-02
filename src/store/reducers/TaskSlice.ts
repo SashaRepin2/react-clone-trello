@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { stat } from "fs";
 import { ITask, Statuses } from "../../interfaces/ITask";
 
 interface ITaskState {
@@ -46,7 +45,6 @@ export const TaskSlice = createSlice({
       }>
     ) {
       const { taskId, listId } = action.payload;
-
       const task = state.tasks.find((task) => task.id === taskId);
 
       if (task) {

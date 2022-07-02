@@ -1,24 +1,28 @@
 import React from "react";
 import { Params, useParams } from "react-router-dom";
 
-import List from "../components/Board/List/List";
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
+import { ListSlice } from "../store/reducers/ListSlice";
+import { TaskSlice } from "../store/reducers/TaskSlice";
 
 import { Box, Container, Stack, TextField, Typography } from "@mui/material";
-import { BoardSlice } from "../store/reducers/BoardSlice";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
 import NotFoundPage from "./NotFoundPage";
+import List from "../components/Board/List/List";
 
 const BoardPage: React.FC = () => {
   const { boardId } = useParams<Params>();
-  const { addList, moveTask } = BoardSlice.actions;
-
+  const { addList } = ListSlice.actions;
+  const { moveTask } = TaskSlice.actions;
   const dispatch = useAppDispatch();
-  const board = useAppSelector((state) => {
+
+  const lists = useAppSelector((state) => {
     if (boardId) {
-      return state.boardReducer.boards.find((item) => item.id === +boardId);
+      return state.listReducer.lists.filter(
+        (list) => list.boardId === +boardId
+      );
     }
   });
 
@@ -29,8 +33,9 @@ const BoardPage: React.FC = () => {
       if (board)
         dispatch(
           addList({
+            id: Date.now(),
+            title: inputValue,
             boardId: board.id,
-            list: { id: Date.now(), title: inputValue, items: [] },
           })
         );
       setInputValue("");
@@ -53,10 +58,8 @@ const BoardPage: React.FC = () => {
       const taskId = +draggableId;
       dispatch(
         moveTask({
-          fromListId: sInd,
-          toListId: dInd,
+          listId: dInd,
           taskId: taskId,
-          boardId: +boardId,
         })
       );
     }
@@ -143,7 +146,7 @@ const BoardPage: React.FC = () => {
               paddingBottom: "10px",
             }}
           >
-            {board.lists.map((list) => (
+            {lists.map((list) => (
               <List key={list.id} list={list} boardId={board.id} />
             ))}
           </Stack>

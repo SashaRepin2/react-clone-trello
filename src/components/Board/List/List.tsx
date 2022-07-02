@@ -3,21 +3,20 @@ import { Box, Container, Stack, TextField, Typography } from "@mui/material";
 import { Droppable } from "react-beautiful-dnd";
 import Task from "./Task/Task";
 
-import { BoardSlice } from "../../../store/reducers/BoardSlice";
 import useAppDispatch from "../../../hooks/useAppDispatch";
 
-import { IList } from "../../../interfaces/ILIst";
+import { IList } from "../../../interfaces/IList";
 import { Statuses } from "../../../interfaces/ITask";
+import { TaskSlice } from "../../../store/reducers/TaskSlice";
 
 interface ListProps {
-  boardId: number;
   list: IList;
   onDeleteHandler?: (id: number) => void;
 }
 
-const List: React.FC<ListProps> = ({ list, boardId }) => {
+const List: React.FC<ListProps> = ({ list }) => {
   const dispatch = useAppDispatch();
-  const { addTask, deleteTask, completeTask } = BoardSlice.actions;
+  const { addTask, deleteTask, changeStatus } = TaskSlice.actions;
   const [inputValue, setInputValue] = React.useState<string>("");
 
   function onKeyDownHandler(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -25,12 +24,11 @@ const List: React.FC<ListProps> = ({ list, boardId }) => {
       if (inputValue) {
         dispatch(
           addTask({
-            boardId: boardId,
-            listId: list.id,
             task: {
               id: Date.now(),
               title: inputValue,
               status: Statuses.UNCOMPLETE,
+              listId: list.id,
             },
           })
         );

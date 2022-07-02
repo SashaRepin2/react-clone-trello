@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IBoard } from "../../interfaces/IBoard";
-import { IList } from "../../interfaces/ILIst";
-import { ITask, Statuses } from "../../interfaces/ITask";
 
 interface IBoardState {
   boards: IBoard[];
