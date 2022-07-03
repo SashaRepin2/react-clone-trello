@@ -101,7 +101,7 @@ const BoardPage: React.FC = () => {
           padding: "15px 0",
         }}
       >
-        <ListsGroup boardId={board.id} />;
+        <ListsGroup boardId={board.id} />
       </Container>
     </Container>
   );

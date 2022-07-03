@@ -58,7 +58,9 @@ const ListsGroup: React.FC<IListsGroup> = ({ boardId }) => {
         {lists.length ? (
           lists.map((list) => <List key={list.id} list={list} />)
         ) : (
-          <Typography variant={"h5"}>Добавьте список</Typography>
+          <Typography variant={"h5"} sx={{ color: "#fff", margin: "0 auto" }}>
+            Добавьте список
+          </Typography>
         )}
       </Stack>
     </DragDropContext>
