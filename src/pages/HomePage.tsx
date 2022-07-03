@@ -1,9 +1,8 @@
 import React from "react";
 import { Container, Stack, Typography } from "@mui/material";
-import { Board, BoardForm } from "../components";
+import { Board, BoardForm, SearchFilter } from "../components";
 import useAppSelector from "../hooks/useAppSelector";
 import { IBoard } from "../interfaces/IBoard";
-import SearchFilter from "../components/SearchFilter/SearchFilter";
 import useDebounce from "../hooks/useDebounce";
 
 const HomePage: React.FC = () => {

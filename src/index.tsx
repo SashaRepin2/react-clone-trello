@@ -9,9 +9,18 @@ const store = setupStore();
 
 // !!!!! Change to middleware OR redux persist
 store.subscribe(() => {
+  // temporary solution
   localStorage.setItem(
     "boards",
     JSON.stringify(store.getState().boardReducer.boards)
+  );
+  localStorage.setItem(
+    "tasks",
+    JSON.stringify(store.getState().taskReducer.tasks)
+  );
+  localStorage.setItem(
+    "lists",
+    JSON.stringify(store.getState().listReducer.lists)
   );
 });
 

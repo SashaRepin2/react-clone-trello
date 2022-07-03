@@ -3,14 +3,10 @@ import { IList } from "../../interfaces/IList";
 
 interface IListState {
   lists: IList[];
-  isLoading: boolean;
-  error: null | string;
 }
 
 const initialState: IListState = {
   lists: JSON.parse(localStorage.getItem("lists") || "[]"),
-  isLoading: false,
-  error: null,
 };
 
 export const ListSlice = createSlice({

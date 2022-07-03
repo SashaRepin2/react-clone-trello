@@ -1,13 +1,14 @@
 import React from "react";
 import { Box, Container, Stack, TextField, Typography } from "@mui/material";
 import { Droppable } from "react-beautiful-dnd";
-import Task from "./Task/Task";
 
 import useAppDispatch from "../../../hooks/useAppDispatch";
 
 import { IList } from "../../../interfaces/IList";
 import { Statuses } from "../../../interfaces/ITask";
 import { TaskSlice } from "../../../store/reducers/TaskSlice";
+import Task from "./Task/Task";
+import useAppSelector from "../../../hooks/useAppSelector";
 
 interface ListProps {
   list: IList;
@@ -16,22 +17,35 @@ interface ListProps {
 
 const List: React.FC<ListProps> = ({ list }) => {
   const dispatch = useAppDispatch();
+  const tasks = useAppSelector((state) =>
+    state.taskReducer.tasks.filter((task) => task.listId === list.id)
+  );
   const { addTask, deleteTask, changeStatus } = TaskSlice.actions;
   const [inputValue, setInputValue] = React.useState<string>("");
 
   function onKeyDownHandler(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.code === "Enter") {
       if (inputValue) {
+        dispatch(
+          addTask({
+            id: Date.now(),
+            title: inputValue,
+            listId: list.id,
+            status: Statuses.UNCOMPLETE,
+          })
+        );
         setInputValue("");
       }
     }
   }
 
-  function DeleteTask(taskId: number) {
-    // dispatch(deleteTask({ boardId: boardId, listId: list.id, taskId: taskId }));
+  function CompleteTask(taskId: number) {
+    dispatch(changeStatus({ taskId: taskId, newStatus: Statuses.COMPLETE }));
   }
 
-  function CompleteTask(taskId: number) {}
+  function DeleteTask(taskId: number) {
+    dispatch(deleteTask(taskId));
+  }
 
   return (
     <Container
@@ -78,7 +92,7 @@ const List: React.FC<ListProps> = ({ list }) => {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {/* {list.items.map((task, index) => (
+            {tasks.map((task, index) => (
               <Task
                 key={task.id}
                 task={task}
@@ -86,7 +100,7 @@ const List: React.FC<ListProps> = ({ list }) => {
                 onCompleteHandler={CompleteTask}
                 onDeleteHandler={DeleteTask}
               />
-            ))} */}
+            ))}
           </Stack>
         )}
       </Droppable>

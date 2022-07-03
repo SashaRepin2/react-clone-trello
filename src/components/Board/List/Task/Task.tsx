@@ -15,10 +15,10 @@ interface ItemProps {
 }
 
 const Task: React.FC<ItemProps> = ({
-  task,
   index,
-  onDeleteHandler,
+  task,
   onCompleteHandler,
+  onDeleteHandler,
 }) => {
   return (
     <Draggable draggableId={task.id.toString()} index={index}>

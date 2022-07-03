@@ -3,23 +3,18 @@ import { ITask, Statuses } from "../../interfaces/ITask";
 
 interface ITaskState {
   tasks: ITask[];
-  isLoading: boolean;
-  error: null | string;
 }
 
 const initialState: ITaskState = {
   tasks: JSON.parse(localStorage.getItem("tasks") || "[]"),
-  isLoading: false,
-  error: null,
 };
 
 export const TaskSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
-    addTask(state, action: PayloadAction<{ newTask: ITask }>) {
-      const { newTask } = action.payload;
-      state.tasks.push(newTask);
+    addTask(state, action: PayloadAction<ITask>) {
+      state.tasks.push(action.payload);
     },
     changeStatus(
       state,

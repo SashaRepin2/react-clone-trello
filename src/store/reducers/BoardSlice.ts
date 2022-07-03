@@ -3,14 +3,10 @@ import { IBoard } from "../../interfaces/IBoard";
 
 interface IBoardState {
   boards: IBoard[];
-  isLoading: boolean;
-  error: null | string;
 }
 
 const initialState: IBoardState = {
   boards: JSON.parse(localStorage.getItem("boards") || "[]"),
-  isLoading: false,
-  error: null,
 };
 
 export const BoardSlice = createSlice({
