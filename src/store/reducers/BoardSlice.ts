@@ -22,10 +22,9 @@ export const BoardSlice = createSlice({
      * @param state текущее состояние
      * @param action объект - доска
      */
-    addBoard(state, action: PayloadAction<{ newBoard?: IBoard }>) {
-      const { newBoard } = action.payload;
-      if (newBoard) {
-        state.boards.push(newBoard);
+    addBoard(state, action: PayloadAction<IBoard>) {
+      if (action.payload) {
+        state.boards.push(action.payload);
       } else {
         state.boards.push({
           id: Date.now(),

@@ -7,6 +7,7 @@ import "./styles/index.scss";
 
 const store = setupStore();
 
+// !!!!! Change to middleware OR redux persist
 store.subscribe(() => {
   localStorage.setItem(
     "boards",

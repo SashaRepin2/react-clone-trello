@@ -4,25 +4,19 @@ import { Params, useParams } from "react-router-dom";
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { ListSlice } from "../store/reducers/ListSlice";
-import { TaskSlice } from "../store/reducers/TaskSlice";
-
-import { Box, Container, Stack, TextField, Typography } from "@mui/material";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
 import NotFoundPage from "./NotFoundPage";
-import List from "../components/Board/List/List";
+import ListsGroup from "../components/Board/ListsGroup/ListsGroup";
+import { Box, Container, TextField, Typography } from "@mui/material";
 
 const BoardPage: React.FC = () => {
   const { boardId } = useParams<Params>();
   const { addList } = ListSlice.actions;
-  const { moveTask } = TaskSlice.actions;
   const dispatch = useAppDispatch();
 
-  const lists = useAppSelector((state) => {
+  const board = useAppSelector((state) => {
     if (boardId) {
-      return state.listReducer.lists.filter(
-        (list) => list.boardId === +boardId
-      );
+      return state.boardReducer.boards.find((board) => board.id === +boardId);
     }
   });
 
@@ -42,34 +36,9 @@ const BoardPage: React.FC = () => {
     }
   }
 
-  function onDragEndHandler(result: DropResult) {
-    const { source, destination, draggableId } = result;
-
-    if (!destination || !boardId) {
-      return;
-    }
-
-    // from
-    const sInd = +source.droppableId;
-    // to
-    const dInd = +destination.droppableId;
-
-    if (sInd !== dInd) {
-      const taskId = +draggableId;
-      dispatch(
-        moveTask({
-          listId: dInd,
-          taskId: taskId,
-        })
-      );
-    }
-  }
-
-  if (!board) {
-    return <NotFoundPage />;
-  }
-
-  return (
+  return !board ? (
+    <NotFoundPage />
+  ) : (
     <Container
       sx={{
         display: "grid",
@@ -132,25 +101,7 @@ const BoardPage: React.FC = () => {
           padding: "15px 0",
         }}
       >
-        <DragDropContext onDragEnd={onDragEndHandler}>
-          <Stack
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            spacing={2}
-            sx={{
-              overflow: "hidden",
-              margin: "15px 0",
-              overflowX: "auto",
-              minHeight: "200px",
-              paddingBottom: "10px",
-            }}
-          >
-            {lists.map((list) => (
-              <List key={list.id} list={list} boardId={board.id} />
-            ))}
-          </Stack>
-        </DragDropContext>
+        <ListsGroup boardId={board.id} />;
       </Container>
     </Container>
   );

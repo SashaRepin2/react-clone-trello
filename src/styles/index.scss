@@ -14,38 +14,38 @@
   background-color: $background-color;
 }
 
-// SCROLL BAR
 * {
   scrollbar-width: thin;
-  scrollbar-color: #c1c1c1 #a1a1a1;
+  scrollbar-color: #57327e $background-color;
 }
 
 *::-webkit-scrollbar {
-  width: 10px;
-  width: 10px;
+  background-color: $background-color;
+  height: 12px;
+  width: 15px;
 }
 
 *::-webkit-scrollbar-track {
   border-radius: 5px;
-  background-color: #a1a1a1;
-
+  background-color: transparent;
   &:hover {
-    background-color: #c2c2c2;
+    background-color: transparent;
   }
   &:active {
-    background-color: #c2c2c2;
+    background-color: transparent;
   }
 }
 
 *::-webkit-scrollbar-thumb {
-  border-radius: 5px;
-  background-color: #c1c1c1;
+  background-color: #57327e;
+  border-radius: 15px;
+  border: 3px solid $background-color;
 
   &:hover {
-    background-color: #929292;
+    background-color: #57327e;
   }
 
   &:active {
-    background-color: #a5a5a5;
+    background-color: #57327e;
   }
 }

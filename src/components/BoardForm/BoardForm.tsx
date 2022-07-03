@@ -27,7 +27,9 @@ const BoardForm: React.FC<BoardFormProps> = ({ isExpanded, setIsExpanded }) => {
 
   function onSubmitHanlder() {
     if (inputValue) {
-      dispatch(addBoard({ id: Date.now(), title: inputValue, lists: [] }));
+      dispatch(
+        addBoard({ id: Date.now(), title: inputValue, created: Date.now() })
+      );
       setInputValue("");
       setIsExpanded();
     }

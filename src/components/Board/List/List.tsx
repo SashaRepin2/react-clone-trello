@@ -22,34 +22,16 @@ const List: React.FC<ListProps> = ({ list }) => {
   function onKeyDownHandler(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.code === "Enter") {
       if (inputValue) {
-        dispatch(
-          addTask({
-            task: {
-              id: Date.now(),
-              title: inputValue,
-              status: Statuses.UNCOMPLETE,
-              listId: list.id,
-            },
-          })
-        );
         setInputValue("");
       }
     }
   }
 
   function DeleteTask(taskId: number) {
-    dispatch(deleteTask({ boardId: boardId, listId: list.id, taskId: taskId }));
+    // dispatch(deleteTask({ boardId: boardId, listId: list.id, taskId: taskId }));
   }
 
-  function CompleteTask(taskId: number) {
-    dispatch(
-      completeTask({
-        boardId: boardId,
-        listId: list.id,
-        taskId: taskId,
-      })
-    );
-  }
+  function CompleteTask(taskId: number) {}
 
   return (
     <Container
@@ -96,7 +78,7 @@ const List: React.FC<ListProps> = ({ list }) => {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {list.items.map((task, index) => (
+            {/* {list.items.map((task, index) => (
               <Task
                 key={task.id}
                 task={task}
@@ -104,7 +86,7 @@ const List: React.FC<ListProps> = ({ list }) => {
                 onCompleteHandler={CompleteTask}
                 onDeleteHandler={DeleteTask}
               />
-            ))}
+            ))} */}
           </Stack>
         )}
       </Droppable>

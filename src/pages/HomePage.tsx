@@ -2,14 +2,32 @@ import React from "react";
 import { Container, Stack, Typography } from "@mui/material";
 import { Board, BoardForm } from "../components";
 import useAppSelector from "../hooks/useAppSelector";
+import { IBoard } from "../interfaces/IBoard";
+import SearchFilter from "../components/SearchFilter/SearchFilter";
+import useDebounce from "../hooks/useDebounce";
 
 const HomePage: React.FC = () => {
   const { boards } = useAppSelector((state) => state.boardReducer);
   const [isExpanded, setIsExpanded] = React.useState<boolean>(false);
+  const [filteredBoards, setFilteredBoards] = React.useState<IBoard[]>(boards);
+  const [filterValue, setFilterValue] = React.useState<string>("");
+  const debouncedValue = useDebounce(filterValue, 500);
 
   const handleExpanded = React.useCallback(() => {
     setIsExpanded(!isExpanded);
   }, [isExpanded]);
+
+  function onChangeFilterValue(value: string) {
+    setFilterValue(value);
+  }
+
+  React.useEffect(() => {
+    setFilteredBoards(
+      boards.filter((board) =>
+        board.title.toLocaleLowerCase().includes(debouncedValue)
+      )
+    );
+  }, [debouncedValue, boards]);
 
   return (
     <Container
@@ -35,6 +53,10 @@ const HomePage: React.FC = () => {
           boxShadow: 4,
         }}
       >
+        <SearchFilter
+          inputValue={filterValue}
+          onChangeHandler={onChangeFilterValue}
+        />
         <Stack
           direction="column"
           justifyContent="flex-start"
@@ -42,14 +64,16 @@ const HomePage: React.FC = () => {
           spacing={2}
           sx={{ padding: "15px 0" }}
         >
-          {boards.length ? (
-            boards.map((board) => <Board key={board.id} board={board} />)
+          {filteredBoards.length ? (
+            filteredBoards.map((board) => (
+              <Board key={board.id} board={board} />
+            ))
           ) : (
             <Typography
               variant={"h5"}
               sx={{ textAlign: "center", color: "#fff", fontWeight: "bold" }}
             >
-              Добавьте новую доску
+              Ничего не найдено
             </Typography>
           )}
         </Stack>
