@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, Stack, TextField, Typography } from "@mui/material";
+import { Box, InputBase, Stack, Typography } from "@mui/material";
 import { Droppable } from "react-beautiful-dnd";
 
 import useAppDispatch from "../../../hooks/useAppDispatch";
@@ -48,12 +48,11 @@ const List: React.FC<ListProps> = ({ list }) => {
   }
 
   return (
-    <Container
-      disableGutters={true}
+    <Box
       sx={{
         bgcolor: "#8458b3",
         borderRadius: "10px",
-        height: "100%",
+        maxWidth: "400px",
       }}
     >
       <Box
@@ -67,15 +66,22 @@ const List: React.FC<ListProps> = ({ list }) => {
           borderRadius: "10px 10px 0 0",
         }}
       >
-        <Typography variant={"h6"} sx={{ color: "#fff" }}>
+        <Typography variant={"h6"} sx={{ color: "#fff", marginBottom: "10px" }}>
           {list.title}
         </Typography>
-        <TextField
+        <InputBase
           value={inputValue}
           placeholder={"Название задания"}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={onKeyDownHandler}
-          sx={{ input: { color: "#fff" } }}
+          sx={{
+            input: {
+              color: "#fff",
+              bgcolor: "#5600b2",
+              borderRadius: "15px",
+              padding: "5px 8px",
+            },
+          }}
         />
       </Box>
       <Droppable droppableId={list.id.toString()}>
@@ -86,6 +92,7 @@ const List: React.FC<ListProps> = ({ list }) => {
               minHeight: "500px",
               minWidth: "300px",
               padding: "15px 10px",
+              overflow: "hidden",
             }}
             direction={"column"}
             spacing={2}
@@ -104,7 +111,7 @@ const List: React.FC<ListProps> = ({ list }) => {
           </Stack>
         )}
       </Droppable>
-    </Container>
+    </Box>
   );
 };
 

@@ -43,22 +43,29 @@ const ListsGroup: React.FC<IListsGroup> = ({ boardId }) => {
   return (
     <DragDropContext onDragEnd={onDragEndHandler}>
       <Stack
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
+        className="asd"
+        direction={"row"}
+        justifyContent={"flex-start"}
+        alignItems={"stretch"}
         spacing={2}
         sx={{
-          overflow: "hidden",
           margin: "15px 0",
+          width: "100%",
+          minHeight: "300px",
           overflowX: "auto",
-          minHeight: "200px",
-          paddingBottom: "10px",
+          paddingBottom: "15px",
         }}
       >
         {lists.length ? (
           lists.map((list) => <List key={list.id} list={list} />)
         ) : (
-          <Typography variant={"h5"} sx={{ color: "#fff", margin: "0 auto" }}>
+          <Typography
+            variant={"h5"}
+            sx={{
+              color: "#fff",
+              margin: "0 auto",
+            }}
+          >
             Добавьте список
           </Typography>
         )}

@@ -5,9 +5,16 @@ import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { ListSlice } from "../store/reducers/ListSlice";
 
+import {
+  Box,
+  Container,
+  IconButton,
+  InputBase,
+  Typography,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import NotFoundPage from "./NotFoundPage";
 import ListsGroup from "../components/Board/ListsGroup/ListsGroup";
-import { Box, Container, TextField, Typography } from "@mui/material";
 
 const BoardPage: React.FC = () => {
   const { boardId } = useParams<Params>();
@@ -22,18 +29,16 @@ const BoardPage: React.FC = () => {
 
   const [inputValue, setInputValue] = React.useState<string>("");
 
-  function onKeyDownHandler(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.code === "Enter") {
-      if (board)
-        dispatch(
-          addList({
-            id: Date.now(),
-            title: inputValue,
-            boardId: board.id,
-          })
-        );
-      setInputValue("");
-    }
+  function onAddListHandler() {
+    if (board && inputValue)
+      dispatch(
+        addList({
+          id: Date.now(),
+          title: inputValue,
+          boardId: board.id,
+        })
+      );
+    setInputValue("");
   }
 
   return !board ? (
@@ -42,7 +47,7 @@ const BoardPage: React.FC = () => {
     <Container
       sx={{
         display: "grid",
-        gridTemplateColumns: "min-content",
+        gridTemplateColumns: "1fr",
         gridTemplateRows: "min-content 9fr",
         gridGap: "50px",
         alignItems: "flex-start",
@@ -53,13 +58,13 @@ const BoardPage: React.FC = () => {
         sx={{
           display: "flex",
           justifyContent: "flex-start",
-          alignItems: "center",
         }}
       >
         <Typography
           variant="h5"
           sx={{
             display: "flex",
+            alignItems: "center",
             flexWrap: "nowrap",
             color: "#fff",
             bgcolor: "#8458b3",
@@ -78,25 +83,35 @@ const BoardPage: React.FC = () => {
             marginLeft: "15px",
           }}
         >
-          <TextField
+          <InputBase
             value={inputValue}
             placeholder={"Название списка"}
             onChange={(e) => {
               setInputValue(e.target.value);
             }}
-            onKeyDown={onKeyDownHandler}
             sx={{ input: { color: "#fff" } }}
           />
+          <IconButton
+            onClick={onAddListHandler}
+            sx={{
+              color: "#8458b3",
+              bgcolor: "#D0BDF4",
+              "&:hover": { bgcolor: "#6d28b8" },
+            }}
+          >
+            <AddIcon />
+          </IconButton>
         </Box>
       </Box>
       <Container
         sx={{
           display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
           flexDirection: "column",
           height: "100%",
           backgroundColor: "#D0BDF4",
           borderRadius: "10px",
-          minWidth: "300px",
           boxShadow: 3,
           padding: "15px 0",
         }}
