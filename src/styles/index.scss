@@ -21,11 +21,11 @@
 
 *::-webkit-scrollbar {
   background-color: $background-color;
-  height: 12px;
+  height: 15px;
   width: 15px;
 }
 
-*::-webkit-scrollbar-track {
+body::-webkit-scrollbar-track {
   border-radius: 5px;
   background-color: transparent;
   &:hover {

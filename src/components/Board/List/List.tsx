@@ -52,6 +52,7 @@ const List: React.FC<ListProps> = ({ list }) => {
       sx={{
         bgcolor: "#8458b3",
         borderRadius: "10px",
+        minHeight: "500px",
         maxWidth: "400px",
       }}
     >
@@ -88,8 +89,6 @@ const List: React.FC<ListProps> = ({ list }) => {
         {(provided, snapshot) => (
           <Stack
             sx={{
-              height: "100%",
-              minHeight: "500px",
               minWidth: "300px",
               padding: "15px 10px",
               overflow: "hidden",
