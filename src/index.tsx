@@ -1,28 +1,14 @@
 import ReactDOM from "react-dom/client";
+import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
-import { setupStore } from "./store";
+
+import store from "./store";
+import { persistor } from "./store";
+
 import App from "./App";
+import { Loader } from "./components";
 
 import "./styles/index.scss";
-
-const store = setupStore();
-
-// !!!!! Change to middleware OR redux persist
-store.subscribe(() => {
-  // temporary solution
-  localStorage.setItem(
-    "boards",
-    JSON.stringify(store.getState().boardReducer.boards)
-  );
-  localStorage.setItem(
-    "tasks",
-    JSON.stringify(store.getState().taskReducer.tasks)
-  );
-  localStorage.setItem(
-    "lists",
-    JSON.stringify(store.getState().listReducer.lists)
-  );
-});
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -30,6 +16,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <Provider store={store}>
-    <App />
+    <PersistGate loading={<Loader />} persistor={persistor}>
+      <App />
+    </PersistGate>
   </Provider>
 );

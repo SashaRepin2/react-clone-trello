@@ -6,7 +6,7 @@ interface IListState {
 }
 
 const initialState: IListState = {
-  lists: JSON.parse(localStorage.getItem("lists") || "[]"),
+  lists: [],
 };
 
 export const ListSlice = createSlice({

@@ -6,7 +6,7 @@ interface ITaskState {
 }
 
 const initialState: ITaskState = {
-  tasks: JSON.parse(localStorage.getItem("tasks") || "[]"),
+  tasks: [],
 };
 
 export const TaskSlice = createSlice({

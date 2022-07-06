@@ -6,7 +6,7 @@ interface IBoardState {
 }
 
 const initialState: IBoardState = {
-  boards: JSON.parse(localStorage.getItem("boards") || "[]"),
+  boards: [],
 };
 
 export const BoardSlice = createSlice({
